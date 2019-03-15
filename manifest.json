@@ -8,6 +8,12 @@
     "scripts": ["background.js"],
     "persistent": false
   },
+  "content_scripts": [
+   {
+     "matches": ["https://*.twitter.com/*"],
+     "js": ["contentScript.js"]
+   }
+ ],
   "page_action": {
     "default_popup": "popup.html",
     "default_icon": {
