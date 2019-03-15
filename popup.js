@@ -5,7 +5,6 @@
 'use strict';
 
 let changeColor = document.getElementById('changeColor');
-let backgroundPage = chrome.extension.getBackgroundPage();
 
 chrome.storage.sync.get('color', function(data) {
   changeColor.style.backgroundColor = data.color;

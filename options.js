@@ -4,18 +4,20 @@
 
 'use strict';
 
-let page = document.getElementById('buttonDiv');
-const kButtonColors = ['#3aa757', '#e8453c', '#f9bb2d', '#4688f1'];
-function constructOptions(kButtonColors) {
-  for (let item of kButtonColors) {
-    let button = document.createElement('button');
-    button.style.backgroundColor = item;
-    button.addEventListener('click', function() {
-      chrome.storage.sync.set({color: item}, function() {
-        console.log('color is ' + item);
-      })
-    });
-    page.appendChild(button);
+let categoryConfig = document.getElementById('category-config');
+let saveConfig = document.getElementById('save-config');
+
+saveConfig.addEventListener('click', function() {
+  let selectedCategories = [];
+  let categories = document.getElementsByName('category');
+  for (let category of categories) {
+    if (category.checked) {
+      selectedCategories.push(category.value);
+    }
   }
-}
-constructOptions(kButtonColors);
+  chrome.tabs.query({url: 'https://twitter.com/*'}, function (tabs){
+    chrome.tabs.sendMessage(tabs[0].id, {categories: JSON.stringify(selectedCategories)}, function(response) {
+
+    });
+  })
+})

@@ -7,9 +7,20 @@ const observer = new WebKitMutationObserver((mutations) => {
 });
 observer.observe(tweets, config);
 
+var selectedCategories = [];
+
+chrome.runtime.onMessage.addListener(
+  function(request, sender, sendResponse) {
+    console.log(sender.tab ?
+                "from a content script:" + sender.tab.url :
+                "from the extension");
+    selectedCategories = request.categories;
+    console.log(selectedCategories);
+  });
+
 function getTweetData() {
     console.log('getting tweets');
-    
+
     console.log('tweets: ', tweets);
 
     let allTweets = document.querySelectorAll('[data-item-type="tweet"]');
