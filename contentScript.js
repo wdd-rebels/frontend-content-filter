@@ -2,6 +2,7 @@
 
 const tweets = document.getElementById('stream-items-id');
 const config = { attributes: true, childList: true, subtree: true };
+const classifiedDataItemIds = [];
 const observer = new WebKitMutationObserver((mutations) => {
     getTweetData();
 });
@@ -20,19 +21,19 @@ chrome.runtime.onMessage.addListener(
 
 function getTweetData() {
     console.log('getting tweets');
-
-    console.log('tweets: ', tweets);
-
     let allTweets = document.querySelectorAll('[data-item-type="tweet"]');
-    console.log('length: ', Array.from(allTweets).length);
     let tweetsToSend = [];
     Array.from(allTweets).forEach((tweet) => {
-        if (tweet) {
+        let dataItemId = tweet.getAttribute('data-item-id');
+        let tweetText = tweet.querySelector('.tweet-text');
+        let senderHandle = tweet.querySelector('.username');
+
+        if (tweet && tweetText && senderHandle && !classifiedDataItemIds.includes(dataItemId)) {
             const tweetDetails = {
-                id: tweet.getAttribute('data-item-id'),
-                text: tweet.querySelector('.tweet-text').innerText,
-                sender_handle: tweet.querySelector('.username').innerText
-            }
+                id: dataItemId,
+                text: tweetText.innerText,
+                sender_handle: senderHandle.innerText
+            };
             tweetsToSend.push(tweetDetails);
         }
     });
@@ -53,6 +54,7 @@ function classify(postBody) {
     xhr.onreadystatechange = function () {
         if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
             var responseJson = JSON.parse(xhr.responseText);
+            handleResponse(responseJson);
             console.log("response from /classify", responseJson);
         } else if (this.readyState === XMLHttpRequest.DONE && this.status !== 200) {
             var errorJson = JSON.parse(xhr.responseText);
@@ -60,4 +62,22 @@ function classify(postBody) {
         }
     }
     xhr.send(postBody);
+}
+
+function handleResponse(responseJson) {
+    if (responseJson !== null) {
+        const responseTweets = responseJson.tweets;
+        responseTweets.forEach((tweet) => {
+            if (tweet.filter) {
+                console.log('tweet to censor!', tweet.id);
+                censorContent(tweet.id);
+            }
+            classifiedDataItemIds.push(tweet.id);
+        });
+    }
+}
+
+function censorContent(tweetID) {
+    const tweetToCensor = document.querySelector(`[data-tweet-id="${tweetID}"]`) || document.querySelector(`[data-conversation-id="${tweetID}"]`);
+    tweetToCensor.classList.add('censoredTweet');
 }

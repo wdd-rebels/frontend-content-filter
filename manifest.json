@@ -16,7 +16,8 @@
   "content_scripts": [
    {
      "matches": ["https://*.twitter.com/*"],
-     "js": ["contentScript.js"]
+     "js": ["contentScript.js"],
+     "css": ["censored.css"]
    }
  ],
   "page_action": {
