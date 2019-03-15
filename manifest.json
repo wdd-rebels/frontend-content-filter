@@ -2,7 +2,7 @@
   "name": "WDD Offensive content filter",
   "version": "1.0",
   "description": "Chrome extension to censor offensive content on Twitter",
-  "permissions": ["activeTab", "declarativeContent", "storage"],
+  "permissions": ["activeTab", "declarativeContent", "storage", "polar-thicket-18683.herokuapp.com"],
   "options_page": "options.html",
   "background": {
     "scripts": ["background.js"],
