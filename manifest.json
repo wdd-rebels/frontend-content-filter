@@ -1,7 +1,7 @@
 {
-  "name": "Getting Started Example",
+  "name": "WDD Offensive content filter",
   "version": "1.0",
-  "description": "Build an Extension!",
+  "description": "Chrome extension to censor offensive content on Twitter",
   "permissions": ["activeTab", "declarativeContent", "storage"],
   "options_page": "options.html",
   "background": {
