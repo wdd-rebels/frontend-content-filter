@@ -2,6 +2,7 @@
 
 const tweets = document.getElementById('stream-items-id');
 const config = { attributes: true, childList: true, subtree: true };
+const classifiedDataItemIds = [];
 const observer = new WebKitMutationObserver((mutations) => {
     getTweetData();
 });
@@ -9,15 +10,19 @@ observer.observe(tweets, config);
 
 function getTweetData() {
     console.log('getting tweets');
-let allTweets = document.querySelectorAll('[data-item-type="tweet"]');
+    let allTweets = document.querySelectorAll('[data-item-type="tweet"]');
     let tweetsToSend = [];
     Array.from(allTweets).forEach((tweet) => {
-        if (tweet) {
+        let dataItemId = tweet.getAttribute('data-item-id');
+        let tweetText = tweet.querySelector('.tweet-text');
+        let senderHandle = tweet.querySelector('.username');
+        
+        if (tweet && tweetText && senderHandle && !classifiedDataItemIds.includes(dataItemId)) {
             const tweetDetails = {
-                id: tweet.getAttribute('data-item-id'),
-                text: tweet.querySelector('.tweet-text').innerText,
-                sender_handle: tweet.querySelector('.username').innerText
-            }
+                id: dataItemId,
+                text: tweetText.innerText,
+                sender_handle: senderHandle.innerText
+            };
             tweetsToSend.push(tweetDetails);
         }
     });
@@ -39,12 +44,14 @@ function classify(postBody) {
         if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
             var responseJson = JSON.parse(xhr.responseText);
             handleResponse(responseJson);
+            console.log("response from /classify", responseJson);
         } else if (this.readyState === XMLHttpRequest.DONE && this.status !== 200) {
             var errorJson = JSON.parse(xhr.responseText);
             console.log("error response from /classify", errorJson);
         }
     }
     xhr.send(postBody);
+    console.log("already classified tweet ids", classifiedDataItemIds);
 }
 
 function handleResponse(responseJson) {
@@ -52,6 +59,7 @@ function handleResponse(responseJson) {
     responseTweets.forEach((tweet) => {
         if (tweet.filter) {
             censorContent(tweet.id);
+            classifiedDataItemIds.push(tweet.id);
         }
     })
 }
