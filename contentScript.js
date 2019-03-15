@@ -39,11 +39,13 @@ function getTweetData() {
         }
     });
 
-    var tweetPostBody = {
-        'tweets': tweetsToSend,
-        'categories': selectedCategories
-    };
-    classify(JSON.stringify(tweetPostBody));
+    if (tweetsToSend.length > 0) {
+        var tweetPostBody = {
+            'tweets': tweetsToSend,
+            'categories': selectedCategories
+        };
+        classify(JSON.stringify(tweetPostBody));
+    }
 }
 
 // post request {'tweets': [{'id': 53536626, 'text': 'hello', 'sender_handle': 'Trump'}]}
