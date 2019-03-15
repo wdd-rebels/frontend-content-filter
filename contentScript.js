@@ -71,14 +71,31 @@ function handleResponse(responseJson) {
         responseTweets.forEach((tweet) => {
             if (tweet.filter) {
                 console.log('tweet to censor!', tweet.id);
-                censorContent(tweet.id);
+                censorContent(tweet.id, tweet.categories);
             }
             classifiedDataItemIds.push(tweet.id);
         });
     }
 }
 
-function censorContent(tweetID) {
+function censorContent(tweetID, categories) {
     const tweetToCensor = document.querySelector(`[data-tweet-id="${tweetID}"]`) || document.querySelector(`[data-conversation-id="${tweetID}"]`);
     tweetToCensor.classList.add('censoredTweet');
+    
+    if (categories.length > 0) {
+        const category = categories[0];
+        switch (category) {
+            case 'brexit':
+                tweetToCensor.classList.add('censoredTweet--brexit');
+                break;
+            case 'dog':
+                tweetToCensor.classList.add('censoredTweet--dog');
+                break;
+            case 'millenials':
+                tweetToCensor.classList.add('censoredTweet--millenials');
+                break;
+            default:
+                break;
+        }
+    }
 }
