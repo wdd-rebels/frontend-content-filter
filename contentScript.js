@@ -13,6 +13,21 @@ Array.from(allTweets).forEach((tweet) => {
             text: tweet.querySelector('.tweet-text').innerText,
             sender_handle: tweet.querySelector('.username').innerText
         }
-        console.log('tweetDetails: ', tweetDetails);
+        classify(tweetDetails);
     }
 });
+
+function classify(postBody) {
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", '/classify', true);
+    
+    //Send the proper header information along with the request
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.onreadystatechange = function() {
+        if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+            var responseJson = JSON.parse(xhr.responseText);
+            console.log("response from /classify", responseJson);
+        }
+    }
+    xhr.send(postBody);
+}
