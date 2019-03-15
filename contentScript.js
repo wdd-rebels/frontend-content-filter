@@ -7,7 +7,7 @@ const observer = new WebKitMutationObserver((mutations) => {
 });
 observer.observe(document.getElementById('timeline'), config);
 
-var selectedCategories = [];
+var selectedCategories = ['dogs', 'brexit', 'millenials'];
 
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
@@ -71,6 +71,7 @@ function handleResponse(responseJson) {
         const responseTweets = responseJson.tweets;
         responseTweets.forEach((tweet) => {
             if (tweet.filter) {
+                console.log('tweet', tweet);
                 console.log('tweet to censor!', tweet.id);
                 censorContent(tweet.id, tweet.categories);
             }
@@ -92,8 +93,8 @@ function censorContent(tweetID, categories) {
             case 'dog':
                 tweetToCensor.classList.add('censoredTweet--dog');
                 break;
-            case 'millenials':
-                tweetToCensor.classList.add('censoredTweet--millenials');
+            case 'millenni':
+                tweetToCensor.classList.add('censoredTweet--millennials');
                 break;
             default:
                 break;
