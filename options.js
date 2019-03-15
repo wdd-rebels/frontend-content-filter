@@ -16,7 +16,7 @@ saveConfig.addEventListener('click', function() {
     }
   }
   chrome.tabs.query({url: 'https://twitter.com/*'}, function (tabs){
-    chrome.tabs.sendMessage(tabs[0].id, {categories: JSON.stringify(selectedCategories)}, function(response) {
+    chrome.tabs.sendMessage(tabs[0].id, {categories: selectedCategories}, function(response) {
 
     });
   })

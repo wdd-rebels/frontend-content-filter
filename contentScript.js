@@ -39,7 +39,8 @@ function getTweetData() {
     });
 
     var tweetPostBody = {
-        'tweets': tweetsToSend
+        'tweets': tweetsToSend,
+        'categories': selectedCategories
     };
     classify(JSON.stringify(tweetPostBody));
 }
