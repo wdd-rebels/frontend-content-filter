@@ -61,6 +61,7 @@ function handleResponse(responseJson) {
             if (tweet.filter) {
                 console.log('tweet to censor!', tweet.id);
                 censorContent(tweet.id);
+                classifiedDataItemIds.push(tweet.id);
             }
         });
     }
