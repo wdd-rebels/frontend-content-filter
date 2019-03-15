@@ -1,12 +1,11 @@
 'use strict';
 
-const tweets = document.getElementById('stream-items-id');
 const config = { attributes: true, childList: true, subtree: true };
 const classifiedDataItemIds = [];
 const observer = new WebKitMutationObserver((mutations) => {
     getTweetData();
 });
-observer.observe(tweets, config);
+observer.observe(document.getElementById('timeline'), config);
 
 var selectedCategories = [];
 
@@ -15,8 +14,10 @@ chrome.runtime.onMessage.addListener(
     console.log(sender.tab ?
                 "from a content script:" + sender.tab.url :
                 "from the extension");
-    selectedCategories = request.categories;
-    console.log(selectedCategories);
+    if (request.type === 'saveConfig') {
+      selectedCategories = request.categories;
+      console.log(selectedCategories);
+    }
   });
 
 function getTweetData() {
