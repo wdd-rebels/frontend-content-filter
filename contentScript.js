@@ -38,8 +38,8 @@ console.log(insertedNodes);
 
 function classify(postBody) {
     var xhr = new XMLHttpRequest();
-    xhr.open("POST", '/classify', true);
-
+    xhr.open("POST", 'https://polar-thicket-18683.herokuapp.com/classify', true);
+    
     //Send the proper header information along with the request
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.onreadystatechange = function () {
