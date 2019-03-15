@@ -55,13 +55,15 @@ function classify(postBody) {
 }
 
 function handleResponse(responseJson) {
-    const responseTweets = responseJson.tweets;
-    responseTweets.forEach((tweet) => {
-        if (tweet.filter) {
-            censorContent(tweet.id);
-            classifiedDataItemIds.push(tweet.id);
-        }
-    })
+    if (responseJson !== null) {
+        const responseTweets = responseJson.tweets;
+        responseTweets.forEach((tweet) => {
+            if (tweet.filter) {
+                console.log('tweet to censor!', tweet.id);
+                censorContent(tweet.id);
+            }
+        });
+    }
 }
 
 function censorContent(tweetID) {
