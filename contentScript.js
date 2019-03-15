@@ -9,11 +9,7 @@ observer.observe(tweets, config);
 
 function getTweetData() {
     console.log('getting tweets');
-    
-    console.log('tweets: ', tweets);
-
-    let allTweets = document.querySelectorAll('[data-item-type="tweet"]');
-    console.log('length: ', Array.from(allTweets).length);
+let allTweets = document.querySelectorAll('[data-item-type="tweet"]');
     let tweetsToSend = [];
     Array.from(allTweets).forEach((tweet) => {
         if (tweet) {
@@ -42,11 +38,25 @@ function classify(postBody) {
     xhr.onreadystatechange = function () {
         if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
             var responseJson = JSON.parse(xhr.responseText);
-            console.log("response from /classify", responseJson);
+            handleResponse(responseJson);
         } else if (this.readyState === XMLHttpRequest.DONE && this.status !== 200) {
             var errorJson = JSON.parse(xhr.responseText);
             console.log("error response from /classify", errorJson);
         }
     }
     xhr.send(postBody);
+}
+
+function handleResponse(responseJson) {
+    const responseTweets = responseJson.tweets;
+    responseTweets.forEach((tweet) => {
+        if (tweet.filter) {
+            censorContent(tweet.id);
+        }
+    })
+}
+
+function censorContent(tweetID) {
+    const tweetToCensor = document.querySelector(`[data-tweet-id="${tweetID}"]`);
+    tweetToCensor.classList.add('censoredTweet');
 }
