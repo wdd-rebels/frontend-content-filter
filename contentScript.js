@@ -2,6 +2,10 @@
 
 const tweets = document.getElementById('stream-items-id');
 const config = { attributes: true, childList: true, subtree: true };
+const observer = new WebKitMutationObserver((mutations) => {
+    getTweetData();
+});
+observer.observe(tweets, config);
 
 function getTweetData() {
     console.log('getting tweets');
@@ -23,18 +27,6 @@ function getTweetData() {
         }
     });
 }
-
-const insertedNodes = [];
-const observer = new WebKitMutationObserver((mutations) => {
-    // mutations.forEach(function (mutation) {
-    //     for (var i = 0; i < mutation.addedNodes.length; i++)
-    //         insertedNodes.push(mutation.addedNodes[i]);
-    // })
-    console.log('DOM changed');
-    getTweetData();
-});
-observer.observe(tweets, config);
-console.log(insertedNodes);
 
 function classify(postBody) {
     var xhr = new XMLHttpRequest();
