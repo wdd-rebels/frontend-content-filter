@@ -10,7 +10,8 @@ Array.from(allTweets).forEach((tweet) => {
     if (tweet) {
         const tweetDetails = {
             id: tweet.getAttribute('data-item-id'),
-            text: tweet.querySelector('.tweet-text').innerText
+            text: tweet.querySelector('.tweet-text').innerText,
+            sender_handle: tweet.querySelector('.username').innerText
         }
         console.log('tweetDetails: ', tweetDetails);
     }
