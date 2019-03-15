@@ -51,7 +51,6 @@ function classify(postBody) {
         }
     }
     xhr.send(postBody);
-    console.log("already classified tweet ids", classifiedDataItemIds);
 }
 
 function handleResponse(responseJson) {
@@ -68,6 +67,6 @@ function handleResponse(responseJson) {
 }
 
 function censorContent(tweetID) {
-    const tweetToCensor = document.querySelector(`[data-tweet-id="${tweetID}"]`);
+    const tweetToCensor = document.querySelector(`[data-tweet-id="${tweetID}"]`) || document.querySelector(`[data-conversation-id="${tweetID}"]`);
     tweetToCensor.classList.add('censoredTweet');
 }
